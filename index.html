@@ -12,13 +12,13 @@
   <script src="keys.js"></script> <!-- This file may not be included in the repository for security reasons. If you are using this code with the provided weather API, please generate your own key and include it in a JS file -->
   <script src="weather.js"></script>
   <!-- CSS -->
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <!-- <link rel="stylesheet" type="text/css" href="style.css"> -->
 </head>
 <body>
   <div class="container-fluid">
     <div class="row">
       <div class="col-sm-4"></div>
-      <div class="col-sm-4">
+      <div class="col-sm-4 text-center">
         <h1 class="text-center">
           Weather App
         </h1>
@@ -31,7 +31,13 @@
         <h5 class="text-center">
           <small id="lat-lon"></small>
         </h5>
-        <button type="button" id="get-weather" class="btn btn-primary">Get Weather</button>
+        <h1 id="location-temperature" class="text-center">
+        </h1>
+        <img id="location-weather-condition-img" class="img-responsive center-block" src="" />
+        <h5 id="location-weather-condition" class="text-center">
+        </h5>
+        <button type="button" id="get-weather" class="btn btn-primary">Refresh</button>
+        <!-- <button type="button" id="location-switch-temp" class="btn btn-info">Switch to °F</button> -->
       </div>
       <div class="col-sm-4"></div>
     </div>

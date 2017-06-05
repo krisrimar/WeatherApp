@@ -5,58 +5,54 @@ const locationAPILink = "http://ip-api.com/json";
 //const weatherAPILink = "api.openweathermap.org/data/2.5/forecast";
 const weatherAPILink = "http://api.apixu.com/v1/current.json";
 
-
 //TEXT
 
-// const NO_QUOTE_ERROR_TEXT = "Error loading quote text :(";
-// const UNKNOWN_AUTHOR_TEXT = "Unknown";
-// const LOADING_QUOTE_TEXT = "Loading quote...";
+const NO_LOCATION_TEXT = "Could not determine your location";
+const NO_LON_LAT_TEXT = ":(";
 
 //IDs
 
 const usersLocationID = "#users-location";
 const getWeatherID = "#get-weather";
 const latituteLongitudeID = "#lat-lon";
-// const tweetLinkID = "#tweet-link";
+const locationTemperatureID = "#location-temperature";
+const locationWeatherConditionID = "#location-weather-condition";
+const locationWeatherConditionImgID = "#location-weather-condition-img";
 
 //VARIABLES
 
 var latitude;
 var longitude;
-var random;
 
 //CODE
 
-var ajaxGetLocationReqBody = {
+var ajaxGetLocationAndWeatherReqBody = {
   type: "GET",
   url: locationAPILink,
   success: function(data) {
     $(usersLocationID).text(data.city + ", " + data.country);
     latitude = data.lat;
     longitude = data.lon;
-    random = "Hello";
     $(latituteLongitudeID).text(latitude + " | " + longitude);
+
+    //Perform retreival of weather information
+    $.ajax({
+      type: "GET",
+      url: weatherAPILink + "?key=" + weatherAppAPIKey + "&q=" + latitude + "," + longitude,
+      success: function(data) {
+        $(locationTemperatureID).text(data.current.temp_c + "°");
+        $(locationWeatherConditionID).text(data.current.condition.text);
+        $(locationWeatherConditionImgID).attr("src", "http:" + data.current.condition.icon);
+      },
+      error: function(error) {
+        console.log("Failed to make a request to Weather");
+      },
+      cache: false
+    })
   },
   error: function(error) {
-    // $(quoteTextID).html(NO_QUOTE_ERROR_TEXT);
-    // $(quoteAuthorID).text(UNKNOWN_AUTHOR_TEXT);
-  },
-  cache: false
-};
-
-
-
-// latitude = 48.6167;
-// longitude = 22.3;
-
-var ajaxGetWeatherReqBody = {
-  type: "GET",
-  url: weatherAPILink + "?key=" + weatherAppAPIKey + "&q=" + latitude + "," + longitude,
-  success: function(data) {
-    console.log(data);
-  },
-  error: function(error) {
-    console.log("Failed to make a request to Weather");
+    $(usersLocationID).text(NO_LOCATION_TEXT);
+    $(latituteLongitudeID).text(NO_LON_LAT_TEXT);
   },
   cache: false
 };
@@ -65,16 +61,10 @@ var ajaxGetWeatherReqBody = {
 
 $(document).ready(function(){
 
-  // $(quoteTextID).html(LOADING_QUOTE_TEXT);
-  // $(quoteAuthorID).text(UNKNOWN_AUTHOR_TEXT);
-
-  //When document loads, make first request to get quote
-  $.ajax(ajaxGetLocationReqBody);
-
-  //console.log(latitude + " " + longitude + " " + random);
-  //$.ajax(ajaxGetWeatherReqBody);
+  //When document loads, make first request to get location
+  $.ajax(ajaxGetLocationAndWeatherReqBody);
 
   $(getWeatherID).on('click', function(e) {
-    $.ajax(ajaxGetLocationReqBody);
+    $.ajax(ajaxGetLocationAndWeatherReqBody);
   });
 });
