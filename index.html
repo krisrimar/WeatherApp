@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Weather App</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- Bootstrap -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.0/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <!-- JS -->
+  <script src="keys.js"></script> <!-- This file may not be included in the repository for security reasons. If you are using this code with the provided weather API, please generate your own key and include it in a JS file -->
+  <script src="weather.js"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-4"></div>
+      <div class="col-sm-4">
+        <h1 class="text-center">
+          Weather App
+        </h1>
+        <h3 class="text-center">
+          <small>Your current location:</small>
+        </h3>
+        <h4 id="users-location" class="text-center">
+          Determining your location...
+        </h4>
+        <h5 class="text-center">
+          <small id="lat-lon"></small>
+        </h5>
+        <button type="button" id="get-weather" class="btn btn-primary">Get Weather</button>
+      </div>
+      <div class="col-sm-4"></div>
+    </div>
+  </div>
+</body>
+</html>
