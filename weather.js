@@ -2,7 +2,6 @@
 //LINKS
 
 const locationAPILink = "http://ip-api.com/json";
-//const weatherAPILink = "api.openweathermap.org/data/2.5/forecast";
 const weatherAPILink = "http://api.apixu.com/v1/current.json";
 
 //TEXT
@@ -24,14 +23,12 @@ const locationSwitchTempID = "#location-switch-temp";
 
 //VARIABLES
 
-var latitude;
-var longitude;
 var showTemperatureInCelcius = true;
 
 //CODE
 
 function changeWeatherConditionBG(code) {
-  var color = "white";
+  var color;
   if(code <= 1003) {
     color = "#ffffb3";
   } else if (code <= 1063) {
@@ -50,14 +47,12 @@ var ajaxGetLocationAndWeatherReqBody = {
   success: function(data) {
     $(locationTemperatureInFahrenheitID).hide();
     $(usersLocationID).text(data.city + ", " + data.country);
-    latitude = data.lat;
-    longitude = data.lon;
-    $(latituteLongitudeID).text(latitude + " | " + longitude);
+    $(latituteLongitudeID).text(data.lat + " | " + data.lon);
 
     //Perform retreival of weather information
     $.ajax({
       type: "GET",
-      url: weatherAPILink + "?key=" + weatherAppAPIKey + "&q=" + latitude + "," + longitude,
+      url: weatherAPILink + "?key=" + weatherAppAPIKey + "&q=" + data.lat + "," + data.lon,
       success: function(data) {
 
         //Retreive temp in Celcius
@@ -65,6 +60,8 @@ var ajaxGetLocationAndWeatherReqBody = {
 
         //Retreive temp in Fahrenheit
         $(locationTemperatureInFahrenheitID).text("°" + data.current.temp_f)
+
+        //Fill in data to UI
         $(locationWeatherConditionID).text(data.current.condition.text);
         $(locationWeatherConditionImgID).attr("src", "http:" + data.current.condition.icon);
         changeWeatherConditionBG(data.current.condition.code);
@@ -90,6 +87,8 @@ $(document).ready(function(){
   $.ajax(ajaxGetLocationAndWeatherReqBody);
 
   $(getWeatherID).on('click', function(e) {
+
+    //Set values to empty values until request is successful
     $(usersLocationID).text(DETERMINING_LOCATION_TEXT);
     $(latituteLongitudeID).text("");
     $(locationTemperatureInCelciusID).text("");
